@@ -30,6 +30,20 @@ private:
         }
         return decrypted;
     }
+// const string& is used to refer to a constant reference to a string so the function wouldnt modify the content of the string
+
+public:
+    void addUser(const string& username, const string& password) {
+        // now encrypt before storing it
+        users[username] = encrypt(password, 3);
+    }
+
+    bool authenticate(const string& username, const string& password) {
+        if (users.find(username) != users.end() && decrypt(users[username], 3) == password) {
+            return true;
+        }
+        return false;
+    }
 
 };
 
