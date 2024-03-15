@@ -92,21 +92,22 @@ int main() {
                     }
                 }
             } else {
-                cout << "invalid username or password! \n";
+                cout << "invalid username or password!\n";
             }
         } else if (option == "no") {
-            cout << "Create a new user! \n";
+            cout << "Create a new user!\n";
             cout << "Enter new username: ";
             cin >> username;
             cout << "Enter new password: ";
             cin >> password;
 
             manager.addUser(username, password);
-            cout << "User created! \n";
+            cout << "User created!\n";
         } else if (option == "exit") {
+            cout << "Ok!";
             break;
         } else {
-            cout << "Invalid option! \n";
+            cout << "Invalid option!\n";
         }
     }
 
