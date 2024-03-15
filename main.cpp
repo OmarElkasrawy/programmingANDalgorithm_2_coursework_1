@@ -45,6 +45,16 @@ public:
         return false;
     }
 
+    void retrievePassword(const string& username) {
+        if (users.find(username) != users.end()) {
+            cout << "Retrieved password for user '" << username << "': " << decrypt(users[username], 3) << endl;
+        } else {
+            cout << "User'" << username << "' not found!" << endl;
+        }
+    }
+
+    //void modifyPassword
+
 };
 
 
@@ -52,6 +62,57 @@ public:
 
 
 int main() {
+    passwordManager manager;
+    string username, password;
+    string option;
+
+    while (true) {
+        cout << "Are you a user? (yes/no/exit): ";
+        cin >> option;
+
+        if (option == "yes") {
+            cout << "Enter username: ";
+            cin >> username;
+            cout << "Enter password: ";
+            cin >> password;
+
+            if (manager.authenticate(username, password)) {
+                cout << "authorized!\n";
+                string action;
+                while (true) {
+                    cout << "Do you want to (retrieve/exit): ";
+                    cin >> action;
+
+                    if (action == "retrieve") {
+                        manager.retrievePassword(username);
+                    } else if (action == "exit") {
+                        break;
+                    } else {
+                        cout <<"invalid option!\n";
+                    }
+                }
+            } else {
+                cout << "invalid username or password! \n";
+            }
+        } else if (option == "no") {
+            cout << "Create a new user! \n";
+            cout << "Enter new username: ";
+            cin >> username;
+            cout << "Enter new password: ";
+            cin >> password;
+
+            manager.addUser(username, password);
+            cout << "User created! \n";
+        } else if (option == "exit") {
+            break;
+        } else {
+            cout << "Invalid option! \n";
+        }
+    }
+
+
+
+
 
     return 0;
 }
