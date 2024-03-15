@@ -64,7 +64,15 @@ public:
         }
     }
 
-    //void modifyPassword
+    void modifyPassword(const string&username, const string& newPassword) {
+        if (users.find(username) != users.end()) {
+            // encrypt before storing
+            users[username] = encrypt(newPassword, 3);
+            cout << "Password for user '" << username << "' modified successfully!" << endl;
+        } else {
+            cout << "User '" << username << "' not found!" << endl;
+        }
+    }
 
 };
 
@@ -91,11 +99,16 @@ int main() {
                 cout << "authorized!\n";
                 string action;
                 while (true) {
-                    cout << "Do you want to (retrieve/exit): ";
+                    cout << "Do you want to (retrieve/modify/exit): ";
                     cin >> action;
 
                     if (action == "retrieve") {
                         manager.retrievePassword(username);
+                    } else if (action == "modify") {
+                        string newPassword;
+                        cout << "Enter new password: ";
+                        cin >> newPassword;
+                        manager.modifyPassword(username, newPassword);
                     } else if (action == "exit") {
                         break;
                     } else {
