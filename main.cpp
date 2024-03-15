@@ -17,7 +17,7 @@ private:
                 char base = isupper(c) ? 'A' : (isdigit(c) ? '0' : 'a');
                 c = ((c - base + shift) % 26) + base;
             } else {
-                c = ((c - 33 + shift) % 94) + 33;
+                c = ((c - 33 + shift) % 94) + 33; //94 total number of ASCII symbols
             }
         }
 
