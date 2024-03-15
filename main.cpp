@@ -53,6 +53,17 @@ public:
         }
     }
 
+    void retrieveAllUsernames() {
+        if (users.empty()) {
+            cout << "There are no stored users. Please create a user!" << endl;
+        } else {
+            cout << "Usernames and Passwords (encrypted) stored are:" << endl;
+            for (const auto &pair: users) {
+                cout << "Username: " << pair.first << " Encrypted password: " << pair.second << endl;
+            }
+        }
+    }
+
     //void modifyPassword
 
 };
@@ -67,7 +78,7 @@ int main() {
     string option;
 
     while (true) {
-        cout << "Are you a user? (yes/no/exit): ";
+        cout << "Are you a user? (yes/no(create a user)/retrieve/exit): ";
         cin >> option;
 
         if (option == "yes") {
@@ -103,6 +114,8 @@ int main() {
 
             manager.addUser(username, password);
             cout << "User created!\n";
+        } else if (option == "retrieve") {
+            manager.retrieveAllUsernames();
         } else if (option == "exit") {
             cout << "Ok!";
             break;
