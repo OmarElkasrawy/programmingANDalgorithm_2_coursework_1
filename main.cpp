@@ -13,10 +13,20 @@ private:
     string encrypt(const string& password, int shift) {
         string encrypted = password;
         for (char& c : encrypted) {
+            if (isalnum(c)) { // encrypt alpha chars and digits
+                char base = isupper(c) ? 'A' : (isdigit(c) ? '0' : 'a');
+                c = ((c - base + shift) % 26) + base;
+            } else {
+                c = ((c - 33 + shift) % 94) + 33;
+            }
+        }
+
+
+        /*for (char& c : encrypted) {
             if (isalpha(c)) {
                 c = (c + shift - 'a') % 26 + 'a';
             }
-        }
+        }*/
         return encrypted;
     }
 
@@ -24,10 +34,19 @@ private:
     string decrypt(const string& encrypted, int shift) {
         string decrypted = encrypted;
         for (char& c : decrypted) {
+            if (isalnum(c)) { // decrypt alpha chars and digits
+                char base = isupper(c) ? 'A' : (isdigit(c) ? '0' : 'a');
+                c = ((c - base - shift + 26) % 26) + base;
+            } else {
+                c = ((c - 33 - shift + 94) % 94) + 33; //94 total number of ASCII symbols
+            }
+        }
+
+        /*for (char& c : decrypted) {
             if (isalpha(c)) {
                 c = (c - shift - 'a' + 26) % 26 + 'a';
             }
-        }
+        }*/
         return decrypted;
     }
 // const string& is used to refer to a constant reference to a string so the function wouldnt modify the content of the string
@@ -35,11 +54,11 @@ private:
 public:
     void addUser(const string& username, const string& password) {
         // now encrypt before storing it
-        users[username] = encrypt(password, 3);
+        users[username] = encrypt(password, 10);
     }
 
     bool authenticate(const string& username, const string& password) {
-        if (users.find(username) != users.end() && decrypt(users[username], 3) == password) {
+        if (users.find(username) != users.end() && decrypt(users[username], 10) == password) {
             return true;
         }
         return false;
@@ -47,7 +66,7 @@ public:
 
     void retrievePassword(const string& username) {
         if (users.find(username) != users.end()) {
-            cout << "Retrieved password for user '" << username << "': " << decrypt(users[username], 3) << endl;
+            cout << "Retrieved password for user '" << username << "': " << decrypt(users[username], 10) << endl;
         } else {
             cout << "User'" << username << "' not found!" << endl;
         }
@@ -67,7 +86,7 @@ public:
     void modifyPassword(const string&username, const string& newPassword) {
         if (users.find(username) != users.end()) {
             // encrypt before storing
-            users[username] = encrypt(newPassword, 3);
+            users[username] = encrypt(newPassword, 10);
             cout << "Password for user '" << username << "' modified successfully!" << endl;
         } else {
             cout << "User '" << username << "' not found!" << endl;
