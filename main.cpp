@@ -1,13 +1,14 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <ctime>
 #include <cstdlib>
 
 using namespace std;
 
 class passwordManager {
 private:
-    unordered_map<string, string> users; // thats a way to store usernames and passwords
+    unordered_map<string, string> users; // that's a way to store usernames and passwords
 
     // now use Caeser
     string encrypt(const string& password, int shift) {
@@ -49,6 +50,18 @@ private:
         }*/
         return decrypted;
     }
+
+    string generateRandomPassword(){
+        const string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}[]|;:,.<>?\"";
+        const int length = 12;
+        string password;
+        srand(time(nullptr));
+        for (int i = 0; i < length; ++i) {
+            password += charset[rand() % charset.length()];
+        }
+        return password;
+    }
+
 // const string& is used to refer to a constant reference to a string so the function wouldnt modify the content of the string
 
 public:
@@ -93,6 +106,10 @@ public:
         }
     }
 
+    string generateAndReturnPassword() {
+        return generateRandomPassword();
+    }
+
 };
 
 
@@ -118,7 +135,7 @@ int main() {
                 cout << "authorized!\n";
                 string action;
                 while (true) {
-                    cout << "Do you want to (retrieve/modify/exit): ";
+                    cout << "Do you want to (retrieve/modify/generate(password)/exit): ";
                     cin >> action;
 
                     if (action == "retrieve") {
@@ -128,6 +145,9 @@ int main() {
                         cout << "Enter new password: ";
                         cin >> newPassword;
                         manager.modifyPassword(username, newPassword);
+                    } else if (action == "generate") {
+                        string generatedPassword = manager.generateAndReturnPassword();
+                        cout << "Generated Password is: " << generatedPassword << endl;
                     } else if (action == "exit") {
                         break;
                     } else {
